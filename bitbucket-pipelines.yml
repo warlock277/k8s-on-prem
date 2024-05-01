@@ -1,0 +1,17 @@
+image: atlassian/default-image:latest
+
+pipelines:
+  default:
+    - step:
+        name: Build and Push Docker Image
+        script:
+          - docker build -t my-registry/my-app:latest .
+          - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin my-registry
+          - docker push my-registry/my-app:latest
+
+    - step:
+        name: Deploy to Kubernetes
+        deployment: production
+        script:
+          - kubectl apply -f manifests/
+          - kubectl rollout status deployment my-app
