@@ -1,0 +1,3 @@
+echo "Generate new token to join work node"...
+kubeadm token create --print-join-command
+echo "Token Generated"
